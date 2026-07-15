@@ -144,6 +144,7 @@ a:hover {
   border: none;
   cursor: pointer;
   transition: all 0.2s ease;
+  text-decoration: none;
 }
 
 .nav-tab:hover {
@@ -161,15 +162,10 @@ a:hover {
 .hero {
   background: linear-gradient(135deg, var(--mason-blue) 0%, var(--mason-blue-light) 100%);
   color: var(--mhon-white);
-  padding: 4rem 0;
-  position: relative;
-  overflow: hidden;
-}
-
-.hero {
-  background: linear-gradient(135deg, var(--mason-blue) 0%, var(--mason-blue-light) 100%);
-  color: var(--mhon-white);
   padding: 3rem 0;
+  min-height: 400px;
+  display: flex;
+  align-items: center;
 }
 
 .hero-content {
@@ -177,22 +173,68 @@ a:hover {
   margin: 0 auto;
   padding: 0 2rem;
   text-align: center;
+  width: 100%;
 }
 
 .hero h2 {
   font-family: 'Outfit', sans-serif;
-  font-size: 2.25rem;
+  font-size: 2.5rem;
   font-weight: 700;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   color: var(--mhon-white);
+  line-height: 1.2;
 }
 
 .hero p {
-  font-size: 1.05rem;
-  line-height: 1.6;
-  color: rgba(255, 255, 255, 0.9);
+  font-size: 1.15rem;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.95);
   max-width: 700px;
-  margin: 0 auto;
+  margin: 0 auto 2.5rem;
+}
+
+/* Buttons */
+.btn {
+  display: inline-block;
+  padding: 1rem 2rem;
+  font-family: 'Outfit', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+  text-decoration: none;
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-primary {
+  background: var(--mason-green);
+  color: var(--mhon-white);
+}
+
+.btn-primary:hover {
+  background: var(--mason-green-dark);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  color: var(--mhon-white);
+}
+
+.btn-secondary {
+  background: var(--mhon-white);
+  color: var(--mason-green);
+  border: 2px solid var(--mason-green);
+}
+
+.btn-secondary:hover {
+  background: var(--mason-green);
+  color: var(--mhon-white);
+}
+
+.btn-small {
+  padding: 0.6rem 1.25rem;
+  font-size: 0.9rem;
 }
 
 /* Section Styles */
@@ -210,6 +252,24 @@ a:hover {
   color: var(--mason-blue);
 }
 
+.section-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.section-header h2 {
+  font-size: 2.25rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.section-header p {
+  font-size: 1.05rem;
+  color: var(--text-light);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
 /* Event Bar Styles */
 .events-list {
   max-width: 1200px;
@@ -225,6 +285,11 @@ a:hover {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  transition: box-shadow 0.3s ease;
+}
+
+.event-bar:hover {
+  box-shadow: var(--shadow-md);
 }
 
 .event-bar:last-child {
@@ -257,48 +322,39 @@ a:hover {
   font-weight: 600;
 }
 
-/* Buttons */
-.btn {
-  display: inline-block;
-  padding: 0.75rem 1.5rem;
-  font-family: 'Outfit', sans-serif;
-  font-size: 0.95rem;
-  font-weight: 600;
-  border: none;
-  border-radius: var(--radius-pill);
-  cursor: pointer;
-  transition: all 0.2s ease;
-  text-align: center;
+/* Event List Item (for homepage) */
+.event-list-item {
+  display: block;
+  padding: 2rem 0;
+  border-bottom: 1px solid var(--mason-gray);
   text-decoration: none;
+  transition: background 0.2s ease;
 }
 
-.btn-primary {
-  background: var(--mason-green);
-  color: var(--mhon-white);
-  box-shadow: var(--shadow-sm);
+.event-list-item:hover {
+  background: rgba(76, 187, 23, 0.03);
 }
 
-.btn-primary:hover {
-  background: var(--mason-green-dark);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+.event-list-item:last-child {
+  border-bottom: none;
 }
 
-.btn-secondary {
-  background: var(--mhon-white);
-  color: var(--mason-green);
-  border: 2px solid var(--mason-green);
+.event-list-content {
+  display: block;
 }
 
-.btn-secondary:hover {
-  background: var(--mason-green);
-  color: var(--mhon-white);
+.event-list-content h3 {
+  font-size: 1.35rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: var(--mason-blue);
 }
 
-.btn-small {
-  padding: 0.6rem 1.25rem;
-  font-size: 0.9rem;
-  align-self: flex-start;
+.event-list-content p {
+  font-size: 0.95rem;
+  color: var(--text-light);
+  line-height: 1.6;
+  margin-bottom: 1.25rem;
 }
 
 /* Info Section */
@@ -325,8 +381,23 @@ a:hover {
 .footer {
   background: var(--mason-blue);
   color: var(--mhon-white);
-  padding: 3rem 0 2rem;
+  padding: 3rem 0 1.5rem;
   margin-top: 4rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.footer::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 300px;
+  height: 300px;
+  background: url('https://resources.finalsite.net/images/f_auto,q_auto,t_image_size_1/v1652970660/masonohioschoolscom/rlwyhiennwufg8y5myem/Mason_greenblueswirl-0111.png') no-repeat center;
+  background-size: contain;
+  opacity: 0.15;
+  pointer-events: none;
 }
 
 .footer-content {
@@ -370,6 +441,16 @@ a:hover {
   font-size: 0.9rem;
 }
 
+.footer-logo {
+  margin-bottom: 1rem;
+}
+
+.footer-logo-img {
+  height: 60px;
+  width: auto;
+  opacity: 0.9;
+}
+
 /* Container */
 .container {
   max-width: 1200px;
@@ -387,6 +468,7 @@ a:hover {
 
   .hero {
     padding: 2.5rem 0;
+    min-height: auto;
   }
 
   .hero h2 {
@@ -404,9 +486,21 @@ a:hover {
   .section-title {
     font-size: 1.5rem;
   }
+
+  .footer-main {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 480px) {
+  .hero {
+    padding: 2rem 0;
+  }
+
+  .hero h2 {
+    font-size: 1.5rem;
+  }
+
   .nav-tab {
     padding: 0.6rem 1.25rem;
     font-size: 0.9rem;
