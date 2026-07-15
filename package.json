@@ -1,0 +1,14 @@
+{
+  "name": "mason-alumni-network",
+  "version": "1.0.0",
+  "description": "Mason Alumni Network website",
+  "private": true,
+  "scripts": {
+    "start": "http-server . -p 8000 -o /alumni/ -c-1",
+    "serve:alumni": "http-server . -p 8000 -o /alumni/ -c-1",
+    "serve": "http-server . -p 8000 -c-1"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  }
+}
