@@ -158,6 +158,26 @@ a:hover {
   box-shadow: var(--shadow-sm);
 }
 
+.login-btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius-pill);
+  font-family: 'Outfit', sans-serif;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--mhon-white);
+  background: var(--mason-blue);
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  margin-left: 1rem;
+}
+
+.login-btn:hover {
+  background: var(--mason-blue-light);
+  color: var(--mhon-white);
+}
+
 /* Hero Section */
 .hero {
   background: linear-gradient(135deg, var(--mason-blue) 0%, var(--mason-blue-light) 100%);
@@ -442,11 +462,21 @@ a:hover {
 }
 
 .footer-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
   margin-bottom: 1rem;
 }
 
 .footer-logo-img {
-  height: 60px;
+  height: 50px;
+  width: auto;
+  opacity: 0.9;
+}
+
+.footer-alumni-logo-img {
+  height: 70px;
   width: auto;
   opacity: 0.9;
 }
