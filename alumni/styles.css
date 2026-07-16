@@ -449,6 +449,21 @@ a:hover {
   margin-bottom: 0.5rem;
 }
 
+.footer-section .social-icons {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.footer-section .social-icon {
+  color: rgba(255, 255, 255, 0.85);
+  transition: all 0.2s ease;
+}
+
+.footer-section .social-icon:hover {
+  color: var(--mason-green);
+}
+
 .footer-section a:hover {
   color: var(--mason-green);
 }
