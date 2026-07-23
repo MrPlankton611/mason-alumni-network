@@ -599,6 +599,7 @@ a:hover {
 }
 
 .share-icon-facebook { background: #1877f2; }
+.share-icon-x { background: #000; }
 .share-icon-linkedin { background: #0a66c2; }
 .share-icon-instagram { background: radial-gradient(circle at 30% 110%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%); }
 

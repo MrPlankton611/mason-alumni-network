@@ -10,12 +10,14 @@
   var linkInput = document.getElementById('shareLinkInput');
   var copyStatus = document.getElementById('shareCopyStatus');
   var fbLink = document.getElementById('shareFacebook');
+  var xLink = document.getElementById('shareX');
   var liLink = document.getElementById('shareLinkedIn');
   var igBtn = document.getElementById('shareInstagram');
 
   var pageUrl = window.location.href;
   linkInput.value = pageUrl;
-  fbLink.href = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(pageUrl);
+  fbLink.href = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(pageUrl) + '&quote=' + encodeURIComponent(SHARE_TEXT);
+  xLink.href = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(SHARE_TEXT) + '&url=' + encodeURIComponent(pageUrl);
   liLink.href = 'https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(pageUrl);
 
   function setOpen(open) {
