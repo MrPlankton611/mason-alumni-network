@@ -56,4 +56,13 @@
       window.open('https://www.instagram.com/', '_blank', 'noopener');
     });
   });
+
+  // Facebook ignores the quote param on sharer.php in most cases (they
+  // disabled prefilled post text years ago to prevent spam), so copy the
+  // caption as a paste-in fallback while still opening the dialog normally.
+  fbLink.addEventListener('click', function () {
+    navigator.clipboard.writeText(SHARE_TEXT).then(function () {
+      showStatus('Caption copied - paste it if Facebook opens without it!', 4000);
+    });
+  });
 })();
