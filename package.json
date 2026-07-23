@@ -1,7 +1,7 @@
 {
   "name": "mason-alumni-network",
   "version": "1.0.0",
-  "description": "Mason Alumni Network website",
+  "description": "Comet Alumni Network website",
   "private": true,
   "scripts": {
     "start": "http-server . -p 8000 -o /alumni/ -c-1",
