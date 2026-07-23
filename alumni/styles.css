@@ -187,6 +187,7 @@ a:hover {
   color: var(--mhon-white);
   padding: 6rem 0;
   min-height: 400px;
+  flex: 1 0 auto;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -264,6 +265,7 @@ a:hover {
 /* Section Styles */
 .section {
   padding: 3rem 0;
+  flex: 1 0 auto;
 }
 
 .section-title {
@@ -564,7 +566,7 @@ a:hover {
   padding: 0;
 }
 
-.share-option {
+.share-popup .share-option {
   display: flex;
   align-items: center;
   gap: 0.75rem;
@@ -580,7 +582,7 @@ a:hover {
   text-decoration: none;
 }
 
-.share-option:hover {
+.share-popup .share-option:hover {
   background: var(--mason-gray);
   color: var(--text-dark);
 }
