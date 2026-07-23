@@ -23,6 +23,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Cache-bust styles.css and share.js
+        run: |
+          SHA="${GITHUB_SHA::7}"
+          sed -i "s/styles\.css\"/styles.css?v=$SHA\"/" alumni/*.html
+          sed -i "s/share\.js\"/share.js?v=$SHA\"/" alumni/*.html
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
