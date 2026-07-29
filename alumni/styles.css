@@ -194,6 +194,15 @@ a:hover {
   z-index: 10;
 }
 
+.nav-dropdown-menu::before {
+  content: '';
+  position: absolute;
+  top: -0.5rem;
+  left: 0;
+  right: 0;
+  height: 0.5rem;
+}
+
 .nav-dropdown-menu a {
   padding: 0.6rem 1rem;
   border-radius: var(--radius-pill);
@@ -233,6 +242,13 @@ a:hover {
   padding: 0 2rem;
   text-align: center;
   width: 100%;
+}
+
+.hero-logo {
+  display: block;
+  height: 84px;
+  width: auto;
+  margin: 0 auto 1.5rem;
 }
 
 .hero h2 {
@@ -508,11 +524,6 @@ a:hover {
 }
 
 .footer-bottom {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 1.5rem;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   padding-top: 2rem;
   text-align: center;
@@ -520,21 +531,12 @@ a:hover {
   font-size: 0.9rem;
 }
 
-.footer-corner-logo {
-  flex-shrink: 0;
-}
-
-.footer-bottom-center {
-  flex: 1;
-}
-
-.footer-bottom-center .footer-alumni-logo-img {
-  display: block;
-  margin: 0 auto 0.75rem;
-}
-
-.footer-donate-btn {
-  flex-shrink: 0;
+.footer-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 1rem;
 }
 
 .footer-logo-img {
