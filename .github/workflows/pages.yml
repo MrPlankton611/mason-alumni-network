@@ -23,6 +23,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Build pages from templates
+        run: node scripts/build.js
       - name: Cache-bust styles.css and share.js
         run: |
           SHA="${GITHUB_SHA::7}"
