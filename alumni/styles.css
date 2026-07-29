@@ -102,8 +102,8 @@ a:hover {
   gap: 1rem;
 }
 
-.logo img {
-  height: 50px;
+.logo {
+  height: 40px;
   width: auto;
 }
 
