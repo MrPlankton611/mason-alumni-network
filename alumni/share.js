@@ -2,10 +2,10 @@
 (function () {
   var SHARE_TEXT = 'Join the Comet Alumni Network! Stay connected with Mason High School grads through mentorship, networking events, and reunions.';
 
-  var btn = document.getElementById('shareBtn');
-  if (!btn) return;
-
+  var triggers = document.querySelectorAll('.share-trigger');
   var popup = document.getElementById('sharePopup');
+  if (!triggers.length || !popup) return;
+
   var closeBtn = document.getElementById('shareClose');
   var linkInput = document.getElementById('shareLinkInput');
   var copyStatus = document.getElementById('shareCopyStatus');
@@ -22,12 +22,15 @@
 
   function setOpen(open) {
     popup.hidden = !open;
-    btn.setAttribute('aria-expanded', String(open));
+    triggers.forEach(function (t) { t.setAttribute('aria-expanded', String(open)); });
+    if (open) popup.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 
-  btn.addEventListener('click', function (e) {
-    e.stopPropagation();
-    setOpen(popup.hidden);
+  triggers.forEach(function (trigger) {
+    trigger.addEventListener('click', function (e) {
+      e.stopPropagation();
+      setOpen(popup.hidden);
+    });
   });
   closeBtn.addEventListener('click', function () { setOpen(false); });
   document.addEventListener('click', function (e) {

@@ -6,7 +6,7 @@ const PAGES_DIR = path.join(ROOT, 'alumni-src', 'pages');
 const PARTIALS_DIR = path.join(ROOT, 'alumni-src', 'partials');
 const OUT_DIR = path.join(ROOT, 'alumni');
 
-const INCLUDE_RE = /<!--\s*INCLUDE:(\w+)((?:\s+\w+="[^"]*")*)\s*-->/g;
+const INCLUDE_RE = /<!--\s*INCLUDE:([\w-]+)((?:\s+\w+="[^"]*")*)\s*-->/g;
 const ATTR_RE = /(\w+)="([^"]*)"/g;
 
 function parseAttrs(attrString) {
@@ -50,8 +50,8 @@ function readPartial(name) {
 }
 
 function resolveInclude(name, attrs) {
-  if (name === 'footer') {
-    return readPartial('footer');
+  if (name === 'footer' || name === 'icon-rail') {
+    return readPartial(name);
   }
   if (name === 'header') {
     if (!attrs.page) throw new Error('INCLUDE:header is missing required "page" attribute');

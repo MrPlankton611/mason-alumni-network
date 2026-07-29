@@ -4,20 +4,22 @@
 (function () {
   var SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyi85htLDVlhc4_Y5rrjJj5LVQmEjTSsNhaV6g5mOix3JxzShAHyyt0jwmif4e2xt4YOQ/exec';
 
-  var link = document.getElementById('donateLink');
-  if (!link || !SHEET_ENDPOINT) return;
+  var links = document.querySelectorAll('.donate-link');
+  if (!links.length || !SHEET_ENDPOINT) return;
 
-  link.addEventListener('click', function () {
-    fetch(SHEET_ENDPOINT, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      keepalive: true,
-      body: JSON.stringify({
-        page: window.location.pathname,
-        referrer: document.referrer,
-        userAgent: navigator.userAgent
-      })
+  links.forEach(function (link) {
+    link.addEventListener('click', function () {
+      fetch(SHEET_ENDPOINT, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        keepalive: true,
+        body: JSON.stringify({
+          page: window.location.pathname,
+          referrer: document.referrer,
+          userAgent: navigator.userAgent
+        })
+      });
     });
   });
 })();
