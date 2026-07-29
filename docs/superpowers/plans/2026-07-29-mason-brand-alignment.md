@@ -4,7 +4,7 @@
 
 **Goal:** Restyle the Comet Alumni Network site (`alumni/`) to visually match masonohioschools.com — font, colors, button/heading treatment, wave-divider motif, photo heroes, and a repurposed icon rail — so it reads as a genuine part of that site.
 
-**Architecture:** Pure static HTML/CSS/JS site, no build step, no framework, no existing test suite. "Tests" in this plan mean small Node scripts driving headless Chromium via the `playwright` package to screenshot pages and assert on computed styles/DOM state — the same verification technique already used throughout this project's development. These verification scripts are scratch files (not part of a permanent CI suite this project doesn't have) — write them to a scratch location, run them, then they can be discarded; only the actual site files (`alumni/**`) get committed.
+**Architecture:** Static HTML/CSS/JS site with a small build-time templating layer (added by a separate, already-completed plan: `docs/superpowers/plans/2026-07-29-partial-templating.md`). Page HTML source of truth now lives in `alumni-src/pages/*.html` (with `<!-- INCLUDE:header -->`/`<!-- INCLUDE:footer -->` markers resolved by `scripts/build.js`), NOT in `alumni/*.html` directly — those three files are generated output, gitignored, and rebuilt by `node scripts/build.js` (or automatically via `npm start`'s `prestart` hook). **Any task below that edits page HTML edits the corresponding file under `alumni-src/pages/`, then runs `node scripts/build.js` before serving/verifying.** `alumni/styles.css` and the `alumni/*.js` files are NOT templated — those stay hand-edited directly in place, exactly as before. "Tests" in this plan mean small Node scripts driving headless Chromium via the `playwright` package to screenshot pages and assert on computed styles/DOM state — the same verification technique already used throughout this project's development. These verification scripts are scratch files (not part of a permanent CI suite this project doesn't have) — write them to a scratch location, run them, then they can be discarded; only the actual site source files (`alumni-src/**`, `alumni/styles.css`, `alumni/*.js`, `alumni/assets/**`) get committed — never commit directly-edited changes to the generated `alumni/*.html` files themselves.
 
 **Tech Stack:** HTML/CSS/vanilla JS, ImageMagick (`magick` CLI) for HEIC→JPG conversion, Node + `playwright` (Chromium) for verification, `http-server` (already a devDependency) to serve the site locally.
 
@@ -12,7 +12,8 @@
 
 - Never add yourself as a co-author on commits (per `CLAUDE.md`).
 - Commit at each logical milestone — this plan's tasks are already sized as commit boundaries; commit at the end of each task.
-- Follow existing code conventions: tabs for HTML indentation in `alumni/*.html` (matches existing files), 2-space indentation in `alumni/styles.css` and `alumni/*.js` (matches existing files).
+- Follow existing code conventions: tabs for HTML indentation in `alumni-src/**/*.html` (matches existing files), 2-space indentation in `alumni/styles.css` and `alumni/*.js` (matches existing files).
+- Never hand-edit the generated `alumni/index.html`, `alumni/college-level.html`, `alumni/career-level.html` directly — they're gitignored build output. Edit the corresponding `alumni-src/pages/*.html` and run `node scripts/build.js` to regenerate.
 - No new frontend dependencies/frameworks — vanilla JS only, matching `nav.js`/`share.js`/`donate-tracking.js`/`signup-tbd.js`.
 - Reuse existing CSS custom properties (`--mason-blue`, `--mason-green`, etc.) and existing inline SVG icon paths (Facebook/LinkedIn/Share) rather than introducing new icon assets where one already exists in the codebase.
 
@@ -324,7 +325,7 @@ git commit -m "Switch to Hind font, align color palette, add outline button and 
 ## Task 3: Homepage photo hero
 
 **Files:**
-- Modify: `alumni/index.html:50-57` (hero section)
+- Modify: `alumni-src/pages/index.html` (hero section — the `<!-- INCLUDE:header -->`-adjacent `<section class="hero">` block)
 - Modify: `alumni/styles.css` (add `.hero--photo` modifier, after the `.hero::after` rule added in Task 2)
 
 **Interfaces:**
@@ -357,7 +358,7 @@ Add to `alumni/styles.css`, directly after the `.hero::after` rule from Task 2:
 
 - [ ] **Step 2: Update the homepage hero markup**
 
-In `alumni/index.html`, replace the hero section (lines 50-57):
+In `alumni-src/pages/index.html` (NOT `alumni/index.html` — that's generated output), replace the hero section:
 
 ```html
 	<section class="hero hero--photo" style="background-image: url('assets/hero-home.jpg')">
@@ -372,10 +373,11 @@ In `alumni/index.html`, replace the hero section (lines 50-57):
 
 (Only two changes from the current markup: `class="hero hero--photo"` + inline `style` background-image on the `<section>`, and `class="btn btn-outline"` instead of `class="btn btn-primary"` on the Donate link.)
 
-- [ ] **Step 3: Start a local server for this task's verification**
+- [ ] **Step 3: Rebuild and start a local server for this task's verification**
 
-Each task in this plan runs as an independent subagent with no server left running from a previous task — start your own:
+Each task in this plan runs as an independent subagent with no server left running from a previous task — rebuild the generated HTML from your updated source template, then start your own server:
 ```bash
+node scripts/build.js
 npx http-server alumni -p 8123 -c-1 &
 sleep 1
 ```
@@ -420,23 +422,25 @@ Get-NetTCPConnection -LocalPort 8123 -ErrorAction SilentlyContinue | Select-Obje
 - [ ] **Step 7: Commit**
 
 ```bash
-git add alumni/index.html alumni/styles.css
+git add alumni-src/pages/index.html alumni/styles.css
 git commit -m "Add photo hero to homepage with dark overlay and outline Donate CTA"
 ```
+
+(`alumni/index.html` is gitignored generated output — don't add it; only the source template and the CSS are tracked.)
 
 ---
 
 ## Task 4: College-level photo hero
 
 **Files:**
-- Modify: `alumni/college-level.html:50-55` (hero section)
+- Modify: `alumni-src/pages/college-level.html` (hero section)
 
 **Interfaces:**
 - Consumes: `alumni/assets/hero-college.jpg` (Task 1), `.hero--photo` (Task 3)
 
 - [ ] **Step 1: Update the college-level hero markup**
 
-In `alumni/college-level.html`, replace the hero section (lines 50-55):
+In `alumni-src/pages/college-level.html` (NOT `alumni/college-level.html` — that's generated output), replace the hero section:
 
 ```html
 	<section class="hero hero--photo" style="background-image: url('assets/hero-college.jpg'); background-position: center 20%;">
@@ -449,9 +453,10 @@ In `alumni/college-level.html`, replace the hero section (lines 50-55):
 
 The inline `background-position: center 20%` biases the crop toward the top of the frame — `hero-college.jpg` is a portrait photo of people standing, so this keeps faces in view rather than centering on waistlines. This value is a starting point — confirmed/adjusted visually in Step 3 below.
 
-- [ ] **Step 2: Start a local server for this task's verification**
+- [ ] **Step 2: Rebuild and start a local server for this task's verification**
 
 ```bash
+node scripts/build.js
 npx http-server alumni -p 8123 -c-1 &
 sleep 1
 ```
@@ -462,7 +467,7 @@ Reuse the pattern from Task 3 Step 4, pointed at `college-level.html`, checking 
 
 - [ ] **Step 4: Run it, read back both screenshots, and adjust the crop if needed**
 
-Look at the screenshots. If the photo is cropping out faces or looks awkwardly centered, adjust the `background-position` value in the inline style (e.g. `center 10%` or `center top`) and re-run until the crop looks right at both viewport sizes. This is a real visual judgment call — don't skip actually looking at the rendered result.
+Look at the screenshots. If the photo is cropping out faces or looks awkwardly centered, adjust the `background-position` value in the inline style in `alumni-src/pages/college-level.html`, run `node scripts/build.js` again to regenerate `alumni/college-level.html`, and re-run the screenshot script until the crop looks right at both viewport sizes. This is a real visual judgment call — don't skip actually looking at the rendered result.
 
 - [ ] **Step 5: Stop the local server**
 
@@ -473,24 +478,30 @@ Get-NetTCPConnection -LocalPort 8123 -ErrorAction SilentlyContinue | Select-Obje
 - [ ] **Step 6: Commit**
 
 ```bash
-git add alumni/college-level.html
+git add alumni-src/pages/college-level.html
 git commit -m "Add photo hero to college-level page"
 ```
+
+(`alumni/college-level.html` is gitignored generated output — don't add it.)
 
 ---
 
 ## Task 5: Icon rail + shared trigger generalization
 
+This task now builds on the templating system (a separate, already-completed plan — see `docs/superpowers/plans/2026-07-29-partial-templating.md`). Instead of pasting the icon-rail HTML block into all three pages, you write it ONCE as a new partial and add a one-line include marker to each page template.
+
 **Files:**
+- Create: `alumni-src/partials/icon-rail.html` (the icon rail markup, once)
+- Modify: `scripts/build.js` (extend `resolveInclude()` to handle the `icon-rail` include name)
+- Modify: `alumni-src/pages/index.html`, `alumni-src/pages/college-level.html`, `alumni-src/pages/career-level.html` (add `<!-- INCLUDE:icon-rail -->` marker; add `donate-link`/`share-trigger` classes to existing buttons)
 - Modify: `alumni/styles.css` (add icon rail CSS)
-- Modify: `alumni/index.html`, `alumni/college-level.html`, `alumni/career-level.html` (add icon rail markup; add `donate-link`/`share-trigger` classes to existing buttons)
 - Modify: `alumni/share.js` (generalize from single `#shareBtn` to all `.share-trigger` elements; scroll popup into view on open)
 - Modify: `alumni/donate-tracking.js` (generalize from single `#donateLink` to all `.donate-link` elements)
-- Modify: `alumni/college-level.html`, `alumni/career-level.html` (add `<script src="donate-tracking.js" defer></script>` — currently only `index.html` has it, but both pages will now have a Donate icon in the rail)
+- Modify: `alumni-src/pages/college-level.html`, `alumni-src/pages/career-level.html` (add `<script src="donate-tracking.js" defer></script>` — currently only `index.html` has it, but both pages will now have a Donate icon in the rail)
 
 **Interfaces:**
-- Consumes: nothing new from earlier tasks (independent of Tasks 2-4's visual work).
-- Produces: `.icon-rail` markup pattern reused verbatim (same HTML block) on all three pages.
+- Consumes: the `INCLUDE:name` marker mechanism and `resolveInclude()`/`readPartial()` functions in `scripts/build.js`, established by the templating plan (currently handles `header` and `footer`; this task adds a third case, `icon-rail`, which takes no attributes and just returns the partial verbatim — same pattern as `footer`).
+- Produces: `.icon-rail` markup defined once in `alumni-src/partials/icon-rail.html`, reused via one include marker per page.
 
 - [ ] **Step 1: Generalize `share.js` to support multiple trigger elements**
 
@@ -651,9 +662,9 @@ Add to `alumni/styles.css`, after the `.hero--photo` rules from Task 3:
 }
 ```
 
-- [ ] **Step 4: Add the icon rail markup to `index.html`**
+- [ ] **Step 4: Create the icon rail partial**
 
-In `alumni/index.html`, insert directly after the `<body>` tag (line 16), before `<header class="header">`:
+Create `alumni-src/partials/icon-rail.html`:
 
 ```html
 	<div class="icon-rail">
@@ -672,29 +683,58 @@ In `alumni/index.html`, insert directly after the `<body>` tag (line 16), before
 	</div>
 ```
 
-Also add `class="donate-link"` to the existing hero Donate button (from Task 3) so it keeps its tracking after `donate-tracking.js` switches to class-based binding: `class="btn btn-outline donate-link"`. And add `class="share-trigger"` to the existing footer `#shareBtn` button: `class="share-btn share-trigger"`.
+- [ ] **Step 5: Extend `scripts/build.js` to handle the `icon-rail` include**
 
-- [ ] **Step 5: Add the same icon rail markup to `college-level.html` and `career-level.html`**
+In `scripts/build.js`, in the `resolveInclude(name, attrs)` function, add a branch for `icon-rail` alongside the existing `footer` branch (it takes no attributes, just like `footer`):
 
-Insert the identical `<div class="icon-rail">...</div>` block (from Step 4) directly after `<body>` in both `alumni/college-level.html` and `alumni/career-level.html`. Add `class="share-btn share-trigger"` to each page's `#shareBtn` button. Neither page currently has a hero Donate button, so there's no existing donate link to add a class to on these two pages — the rail's Donate icon is the only one.
+```js
+function resolveInclude(name, attrs) {
+  if (name === 'footer' || name === 'icon-rail') {
+    return readPartial(name);
+  }
+  if (name === 'header') {
+    if (!attrs.page) throw new Error('INCLUDE:header is missing required "page" attribute');
+    if (!attrs.tagline) throw new Error('INCLUDE:header is missing required "tagline" attribute');
+    return readPartial('header')
+      .replace('{{TAGLINE}}', attrs.tagline)
+      .replace('{{NAV}}', buildNav(attrs.page));
+  }
+  throw new Error('Unknown INCLUDE name "' + name + '"');
+}
+```
 
-- [ ] **Step 6: Add `donate-tracking.js` to the two pages that don't have it yet**
+(This replaces the existing `if (name === 'footer') { return readPartial('footer'); }` branch — `icon-rail` behaves identically to `footer`, so they share one branch.)
 
-In `alumni/college-level.html`, add after the existing `<script src="signup-tbd.js" defer></script>` line:
+- [ ] **Step 6: Add the icon rail include marker to all three page templates**
+
+In `alumni-src/pages/index.html`, insert directly after the `<body>` tag, before the `<!-- INCLUDE:header ... -->` marker:
+
+```html
+<!-- INCLUDE:icon-rail -->
+```
+
+Do the same in `alumni-src/pages/college-level.html` and `alumni-src/pages/career-level.html`.
+
+Also add `class="donate-link"` to the existing hero Donate button in `alumni-src/pages/index.html` (from Task 3) so it keeps its tracking after `donate-tracking.js` switches to class-based binding: `class="btn btn-outline donate-link"`. And add `class="share-trigger"` to the `#shareBtn` button in the footer partial, `alumni-src/partials/footer.html`: `class="share-btn share-trigger"` (this one edit in the shared partial covers all three pages, since the footer is now single-sourced).
+
+- [ ] **Step 7: Add `donate-tracking.js` to the two page templates that don't have it yet**
+
+In `alumni-src/pages/college-level.html`, add after the existing `<script src="signup-tbd.js" defer></script>` line:
 ```html
 	<script src="donate-tracking.js" defer></script>
 ```
 
-Do the same in `alumni/career-level.html`.
+Do the same in `alumni-src/pages/career-level.html`.
 
-- [ ] **Step 7: Start a local server for this task's verification**
+- [ ] **Step 8: Rebuild and start a local server for this task's verification**
 
 ```bash
+node scripts/build.js
 npx http-server alumni -p 8123 -c-1 &
 sleep 1
 ```
 
-- [ ] **Step 8: Write a verification script for the icon rail**
+- [ ] **Step 9: Write a verification script for the icon rail**
 
 ```js
 const { chromium } = require('playwright');
@@ -734,11 +774,11 @@ const { chromium } = require('playwright');
 })();
 ```
 
-- [ ] **Step 9: Run it and confirm**
+- [ ] **Step 10: Run it and confirm**
 
 Expected: icon count is `4` on all three pages, rail visible at 1280px, rail hidden at 400px, popup opens via the rail's share button, `ERRORS: []`.
 
-- [ ] **Step 10: Verify Donate tracking still fires from both the rail and (on the homepage) the hero button**
+- [ ] **Step 11: Verify Donate tracking still fires from both the rail and (on the homepage) the hero button**
 
 Reuse the curl-based verification technique already used earlier in this project (POST directly to the Apps Script URL and confirm `{"ok":true}` / HTTP 200 — see `alumni/donate-tracking-setup.md`) is unaffected by this change; the class-based binding doesn't change the fetch call itself. Instead, confirm via Playwright that clicking each `.donate-link` element fires a request to the Apps Script domain:
 
@@ -765,18 +805,20 @@ const { chromium } = require('playwright');
 
 Expected: `tracked requests fired: 2` (one from the rail icon, one from the hero button — confirming both elements with the `.donate-link` class independently trigger tracking).
 
-- [ ] **Step 11: Stop the local server**
+- [ ] **Step 12: Stop the local server**
 
 ```powershell
 Get-NetTCPConnection -LocalPort 8123 -ErrorAction SilentlyContinue | Select-Object -ExpandProperty OwningProcess -Unique | ForEach-Object { Stop-Process -Id $_ -Force -ErrorAction SilentlyContinue }
 ```
 
-- [ ] **Step 12: Commit**
+- [ ] **Step 13: Commit**
 
 ```bash
-git add alumni/index.html alumni/college-level.html alumni/career-level.html alumni/styles.css alumni/share.js alumni/donate-tracking.js
+git add alumni-src/partials/icon-rail.html alumni-src/partials/footer.html alumni-src/pages/index.html alumni-src/pages/college-level.html alumni-src/pages/career-level.html scripts/build.js alumni/styles.css alumni/share.js alumni/donate-tracking.js
 git commit -m "Add repurposed icon rail (Donate/Facebook/LinkedIn/Share) across all pages"
 ```
+
+(`alumni/index.html`, `alumni/college-level.html`, `alumni/career-level.html` are gitignored generated output — don't add them.)
 
 ---
 
@@ -786,9 +828,10 @@ git commit -m "Add repurposed icon rail (Donate/Facebook/LinkedIn/Share) across 
 
 **Interfaces:** none.
 
-- [ ] **Step 1: Start a local server for this task's verification**
+- [ ] **Step 1: Rebuild and start a local server for this task's verification**
 
 ```bash
+node scripts/build.js
 npx http-server alumni -p 8123 -c-1 &
 sleep 1
 ```
@@ -844,7 +887,7 @@ Expected: `nav dropdown opens on hover: true`, `signup-tbd message appears on cl
 
 - [ ] **Step 4: Fix anything that looks wrong**
 
-If any visual issue turns up, fix it directly in the relevant file from the task that introduced it, then re-run this task's script to confirm the fix before moving on.
+If any visual issue turns up, fix it directly in the relevant source file from the task that introduced it (`alumni-src/pages/*.html` or `alumni-src/partials/*.html` for markup, `alumni/styles.css`/`alumni/*.js` for styles/behavior — never the generated `alumni/*.html` directly), run `node scripts/build.js` to regenerate, then re-run this task's script to confirm the fix before moving on.
 
 - [ ] **Step 5: Stop the local server**
 
