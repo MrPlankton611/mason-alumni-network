@@ -11,20 +11,27 @@ function doPost(e) {
 
   sheet.getRange(rowIndex, 1).setValue(new Date());
 
-  // Force columns B-D to plain text BEFORE writing, so a value starting with
-  // =, +, -, @ can never be evaluated as a formula (formula injection) no
-  // matter what's posted. This is more reliable than escaping the string,
-  // since number-format-as-text is enforced unconditionally by Sheets.
+  // Plain-text format alone does NOT stop Sheets from evaluating a leading
+  // =/+/-/@ as a formula (formula recognition happens before number format
+  // is applied). The part that actually prevents it is the literal leading
+  // apostrophe in escapeForSheet() below - that's the documented Apps Script
+  // mechanism for forcing a value to be stored as literal text. The format
+  // call is kept only as a harmless second layer.
   var textRange = sheet.getRange(rowIndex, 2, 1, 3);
   textRange.setNumberFormat('@');
   textRange.setValues([[
-    String(params.page || ''),
-    String(params.referrer || ''),
-    String(params.userAgent || '')
+    escapeForSheet(params.page),
+    escapeForSheet(params.referrer),
+    escapeForSheet(params.userAgent)
   ]]);
 
   return ContentService.createTextOutput(JSON.stringify({ ok: true }))
     .setMimeType(ContentService.MimeType.JSON);
+}
+
+function escapeForSheet(value) {
+  value = String(value || '');
+  return /^[=+\-@]/.test(value) ? "'" + value : value;
 }
 ```
 
