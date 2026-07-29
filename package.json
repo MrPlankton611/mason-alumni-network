@@ -12,6 +12,7 @@
     "serve": "http-server . -p 8000 -c-1"
   },
   "devDependencies": {
-    "http-server": "^14.1.1"
+    "http-server": "^14.1.1",
+    "playwright": "^1.62.0"
   }
 }
