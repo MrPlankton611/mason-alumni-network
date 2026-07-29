@@ -271,6 +271,10 @@ a:hover {
   z-index: 1;
 }
 
+.hero--college {
+  background-position: center 38%;
+}
+
 .hero-content {
   max-width: 1200px;
   margin: 0 auto;
@@ -758,6 +762,10 @@ a:hover {
   .hero {
     padding: 2.5rem 0;
     min-height: auto;
+  }
+
+  .hero--college {
+    background-position: center 28%;
   }
 
   .nav-dropdown-menu {
