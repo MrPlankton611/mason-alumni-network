@@ -508,6 +508,11 @@ a:hover {
 }
 
 .footer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1.5rem;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   padding-top: 2rem;
   text-align: center;
@@ -515,12 +520,21 @@ a:hover {
   font-size: 0.9rem;
 }
 
-.footer-logo {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 2rem;
-  margin-bottom: 1rem;
+.footer-corner-logo {
+  flex-shrink: 0;
+}
+
+.footer-bottom-center {
+  flex: 1;
+}
+
+.footer-bottom-center .footer-alumni-logo-img {
+  display: block;
+  margin: 0 auto 0.75rem;
+}
+
+.footer-donate-btn {
+  flex-shrink: 0;
 }
 
 .footer-logo-img {
