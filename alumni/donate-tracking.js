@@ -2,7 +2,7 @@
 // to a Google Sheet via a Google Apps Script Web App. Fill in the URL below after
 // deploying the Apps Script (see donate-tracking-setup.md), or leave blank to skip logging.
 (function () {
-  var SHEET_ENDPOINT = ''; // e.g. 'https://script.google.com/macros/s/XXXXX/exec'
+  var SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyi85htLDVlhc4_Y5rrjJj5LVQmEjTSsNhaV6g5mOix3JxzShAHyyt0jwmif4e2xt4YOQ/exec';
 
   var link = document.getElementById('donateLink');
   if (!link || !SHEET_ENDPOINT) return;
