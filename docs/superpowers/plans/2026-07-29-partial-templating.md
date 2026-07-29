@@ -34,23 +34,25 @@
 Create `alumni-src/partials/header.html`:
 
 ```html
-<header class="header">
-	<div class="header-main">
-		<div class="container">
-			<div class="logo-section">
-				<a href="index.html" class="logo-link">
-					<img src="assets/alumni_network_logo.png" alt="Comet Alumni Network" class="logo">
-				</a>
-				<div class="site-title">
-					<h1>Comet Alumni Network</h1>
-					<span class="tagline">{{TAGLINE}}</span>
+	<header class="header">
+		<div class="header-main">
+			<div class="container">
+				<div class="logo-section">
+					<a href="index.html" class="logo-link">
+						<img src="assets/alumni_network_logo.png" alt="Comet Alumni Network" class="logo">
+					</a>
+					<div class="site-title">
+						<h1>Comet Alumni Network</h1>
+						<span class="tagline">{{TAGLINE}}</span>
+					</div>
 				</div>
-			</div>
 {{NAV}}
+			</div>
 		</div>
-	</div>
-</header>
+	</header>
 ```
+
+(Corrected after Task 1's review: the header is a direct child of `<body>`, same nesting depth as `<footer>` in the partial below — this fenced block originally had a one-tab transcription error, caught during Task 1's fix loop and confirmed against the real source file's indentation.)
 
 - [ ] **Step 2: Create the footer partial**
 
