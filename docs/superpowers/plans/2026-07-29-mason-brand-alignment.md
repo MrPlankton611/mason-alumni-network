@@ -305,7 +305,14 @@ Expected: `body font-family` now contains `Hind`, `.btn-outline exists: true`, `
 
 Extend the script (or write a second one) to screenshot `index.html`, `college-level.html`, and `career-level.html` at 1280x900, and read each file into the conversation to confirm: font looks like Hind (rounder than the old Outfit), the green underline bar under "Programs & Events" is visibly thicker, and a subtle white wave curve is visible at the bottom edge of each hero. Confirm no layout breakage (nav dropdowns, buttons, footer all still look correct — this CSS pass touches shared rules used everywhere).
 
-- [ ] **Step 11: Commit**
+- [ ] **Step 11: Stop the local server**
+
+`lsof` is not available in this environment (Windows/git-bash) — use PowerShell to find and kill whatever is listening on port 8123:
+```powershell
+Get-NetTCPConnection -LocalPort 8123 -ErrorAction SilentlyContinue | Select-Object -ExpandProperty OwningProcess -Unique | ForEach-Object { Stop-Process -Id $_ -Force -ErrorAction SilentlyContinue }
+```
+
+- [ ] **Step 12: Commit**
 
 ```bash
 git add alumni/styles.css
@@ -365,7 +372,15 @@ In `alumni/index.html`, replace the hero section (lines 50-57):
 
 (Only two changes from the current markup: `class="hero hero--photo"` + inline `style` background-image on the `<section>`, and `class="btn btn-outline"` instead of `class="btn btn-primary"` on the Donate link.)
 
-- [ ] **Step 3: Write a verification script for the photo hero**
+- [ ] **Step 3: Start a local server for this task's verification**
+
+Each task in this plan runs as an independent subagent with no server left running from a previous task — start your own:
+```bash
+npx http-server alumni -p 8123 -c-1 &
+sleep 1
+```
+
+- [ ] **Step 4: Write a verification script for the photo hero**
 
 Create a scratch script that navigates to `index.html`, screenshots it, and checks: `.hero` has a `background-image` computed style referencing `hero-home.jpg`, the Donate button has `background-color` transparent (rgba(0, 0, 0, 0)) by default, and there are no console errors. Example:
 
@@ -392,11 +407,17 @@ const { chromium } = require('playwright');
 })();
 ```
 
-- [ ] **Step 4: Run it and confirm**
+- [ ] **Step 5: Run it and confirm**
 
 Expected: `hero background-image includes hero-home.jpg: true`, `donate button background` is a transparent/rgba(0,0,0,0) value, `ERRORS: []`. Read the screenshot back and confirm: the photo is visible, the dark gradient makes the white headline/paragraph legible, the Mason logo and Donate button both read clearly against the photo, and the wave from Task 2 is still visible at the bottom edge.
 
-- [ ] **Step 5: Commit**
+- [ ] **Step 6: Stop the local server**
+
+```powershell
+Get-NetTCPConnection -LocalPort 8123 -ErrorAction SilentlyContinue | Select-Object -ExpandProperty OwningProcess -Unique | ForEach-Object { Stop-Process -Id $_ -Force -ErrorAction SilentlyContinue }
+```
+
+- [ ] **Step 7: Commit**
 
 ```bash
 git add alumni/index.html alumni/styles.css
@@ -428,15 +449,28 @@ In `alumni/college-level.html`, replace the hero section (lines 50-55):
 
 The inline `background-position: center 20%` biases the crop toward the top of the frame — `hero-college.jpg` is a portrait photo of people standing, so this keeps faces in view rather than centering on waistlines. This value is a starting point — confirmed/adjusted visually in Step 3 below.
 
-- [ ] **Step 2: Write a verification screenshot script**
+- [ ] **Step 2: Start a local server for this task's verification**
 
-Reuse the pattern from Task 3 Step 3, pointed at `college-level.html`, checking `.hero` background-image includes `hero-college.jpg`, and screenshotting at both 1280x900 (desktop) and 400x900 (mobile) viewport sizes.
+```bash
+npx http-server alumni -p 8123 -c-1 &
+sleep 1
+```
 
-- [ ] **Step 3: Run it, read back both screenshots, and adjust the crop if needed**
+- [ ] **Step 3: Write a verification screenshot script**
+
+Reuse the pattern from Task 3 Step 4, pointed at `college-level.html`, checking `.hero` background-image includes `hero-college.jpg`, and screenshotting at both 1280x900 (desktop) and 400x900 (mobile) viewport sizes.
+
+- [ ] **Step 4: Run it, read back both screenshots, and adjust the crop if needed**
 
 Look at the screenshots. If the photo is cropping out faces or looks awkwardly centered, adjust the `background-position` value in the inline style (e.g. `center 10%` or `center top`) and re-run until the crop looks right at both viewport sizes. This is a real visual judgment call — don't skip actually looking at the rendered result.
 
-- [ ] **Step 4: Commit**
+- [ ] **Step 5: Stop the local server**
+
+```powershell
+Get-NetTCPConnection -LocalPort 8123 -ErrorAction SilentlyContinue | Select-Object -ExpandProperty OwningProcess -Unique | ForEach-Object { Stop-Process -Id $_ -Force -ErrorAction SilentlyContinue }
+```
+
+- [ ] **Step 6: Commit**
 
 ```bash
 git add alumni/college-level.html
@@ -653,7 +687,14 @@ In `alumni/college-level.html`, add after the existing `<script src="signup-tbd.
 
 Do the same in `alumni/career-level.html`.
 
-- [ ] **Step 7: Write a verification script for the icon rail**
+- [ ] **Step 7: Start a local server for this task's verification**
+
+```bash
+npx http-server alumni -p 8123 -c-1 &
+sleep 1
+```
+
+- [ ] **Step 8: Write a verification script for the icon rail**
 
 ```js
 const { chromium } = require('playwright');
@@ -693,11 +734,11 @@ const { chromium } = require('playwright');
 })();
 ```
 
-- [ ] **Step 8: Run it and confirm**
+- [ ] **Step 9: Run it and confirm**
 
 Expected: icon count is `4` on all three pages, rail visible at 1280px, rail hidden at 400px, popup opens via the rail's share button, `ERRORS: []`.
 
-- [ ] **Step 9: Verify Donate tracking still fires from both the rail and (on the homepage) the hero button**
+- [ ] **Step 10: Verify Donate tracking still fires from both the rail and (on the homepage) the hero button**
 
 Reuse the curl-based verification technique already used earlier in this project (POST directly to the Apps Script URL and confirm `{"ok":true}` / HTTP 200 — see `alumni/donate-tracking-setup.md`) is unaffected by this change; the class-based binding doesn't change the fetch call itself. Instead, confirm via Playwright that clicking each `.donate-link` element fires a request to the Apps Script domain:
 
@@ -724,7 +765,13 @@ const { chromium } = require('playwright');
 
 Expected: `tracked requests fired: 2` (one from the rail icon, one from the hero button — confirming both elements with the `.donate-link` class independently trigger tracking).
 
-- [ ] **Step 10: Commit**
+- [ ] **Step 11: Stop the local server**
+
+```powershell
+Get-NetTCPConnection -LocalPort 8123 -ErrorAction SilentlyContinue | Select-Object -ExpandProperty OwningProcess -Unique | ForEach-Object { Stop-Process -Id $_ -Force -ErrorAction SilentlyContinue }
+```
+
+- [ ] **Step 12: Commit**
 
 ```bash
 git add alumni/index.html alumni/college-level.html alumni/career-level.html alumni/styles.css alumni/share.js alumni/donate-tracking.js
@@ -739,7 +786,14 @@ git commit -m "Add repurposed icon rail (Donate/Facebook/LinkedIn/Share) across 
 
 **Interfaces:** none.
 
-- [ ] **Step 1: Write a full regression script covering prior features**
+- [ ] **Step 1: Start a local server for this task's verification**
+
+```bash
+npx http-server alumni -p 8123 -c-1 &
+sleep 1
+```
+
+- [ ] **Step 2: Write a full regression script covering prior features**
 
 ```js
 const { chromium } = require('playwright');
@@ -784,15 +838,21 @@ const { chromium } = require('playwright');
 })();
 ```
 
-- [ ] **Step 2: Run it, read back every screenshot, and confirm**
+- [ ] **Step 3: Run it, read back every screenshot, and confirm**
 
 Expected: `nav dropdown opens on hover: true`, `signup-tbd message appears on click: true`, `ERRORS: []`. Read all 6 screenshots back into the conversation and visually confirm: Hind font throughout, correct colors, both photo heroes look intentional (not awkwardly cropped), the wave divider is visible under every hero, the icon rail appears on desktop and is absent on mobile, and nothing looks broken or misaligned on any page at either viewport size.
 
-- [ ] **Step 3: Fix anything that looks wrong**
+- [ ] **Step 4: Fix anything that looks wrong**
 
 If any visual issue turns up, fix it directly in the relevant file from the task that introduced it, then re-run this task's script to confirm the fix before moving on.
 
-- [ ] **Step 4: Final commit (only if fixes were made in Step 3)**
+- [ ] **Step 5: Stop the local server**
+
+```powershell
+Get-NetTCPConnection -LocalPort 8123 -ErrorAction SilentlyContinue | Select-Object -ExpandProperty OwningProcess -Unique | ForEach-Object { Stop-Process -Id $_ -Force -ErrorAction SilentlyContinue }
+```
+
+- [ ] **Step 6: Final commit (only if fixes were made in Step 4)**
 
 ```bash
 git add -A
