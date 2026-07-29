@@ -301,10 +301,10 @@ a:hover {
   transform: scale(1.08);
 }
 
-.icon-rail-donate { background: var(--mason-green); }
+.icon-rail-donate { background: var(--mason-green-dark); }
 .icon-rail-facebook { background: #1877f2; }
 .icon-rail-linkedin { background: #0a66c2; }
-.icon-rail-share { background: var(--mason-cyan); }
+.icon-rail-share { background: var(--mason-blue); }
 
 @media (max-width: 768px) {
   .icon-rail {

@@ -7,6 +7,7 @@
     "build": "node scripts/build.js",
     "prestart": "npm run build",
     "preserve:alumni": "npm run build",
+    "preserve": "npm run build",
     "start": "http-server . -p 8000 -o /alumni/ -c-1",
     "serve:alumni": "http-server . -p 8000 -o /alumni/ -c-1",
     "serve": "http-server . -p 8000 -c-1"

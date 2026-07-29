@@ -3,7 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
-    paths: ['alumni/**', '.github/workflows/pages.yml']
+    paths: ['alumni/**', 'alumni-src/**', 'scripts/build.js', '.github/workflows/pages.yml']
   workflow_dispatch:
 
 permissions:
@@ -33,6 +33,7 @@ jobs:
           SHA="${GITHUB_SHA::7}"
           sed -i "s/styles\.css\"/styles.css?v=$SHA\"/" alumni/*.html
           sed -i "s/share\.js\"/share.js?v=$SHA\"/" alumni/*.html
+          sed -i "s/donate-tracking\.js\"/donate-tracking.js?v=$SHA\"/" alumni/*.html
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
