@@ -398,6 +398,12 @@ a:hover {
   font-weight: 600;
 }
 
+.signup-tbd-message {
+  font-size: 0.95rem;
+  color: var(--mason-blue);
+  font-style: italic;
+}
+
 /* Event List Item (for homepage) */
 .event-list-item {
   display: block;
