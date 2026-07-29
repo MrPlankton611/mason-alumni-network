@@ -1,13 +1,16 @@
 /* Comet Alumni Network - Shared Styles */
 /* Based on Mason High School branding */
 
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Lato:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Hind:wght@300;400;500;600;700&display=swap');
 
 :root {
   --mason-green: #4cbb17;
   --mason-green-dark: #3da912;
+  --mason-green-link: #008a00;
   --mason-blue: #2a3d4d;
   --mason-blue-light: #415566;
+  --mason-cyan: #1fb7e5;
+  --hero-overlay: #223440;
   --mason-gray: #eaeaeb;
   --mhon-white: #ffffff;
   --text-dark: #1a1a1a;
@@ -29,9 +32,9 @@
 }
 
 body {
-  font-family: 'Lato', sans-serif;
-  font-size: 16px;
-  line-height: 1.6;
+  font-family: 'Hind', sans-serif;
+  font-size: 17px;
+  line-height: 27px;
   color: var(--text-dark);
   background-color: #f8f9fa;
   -webkit-font-smoothing: antialiased;
@@ -42,14 +45,14 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Outfit', sans-serif;
-  font-weight: 600;
+  font-family: 'Hind', sans-serif;
+  font-weight: 700;
   line-height: 1.2;
   color: var(--mason-blue);
 }
 
 a {
-  color: var(--mason-green);
+  color: var(--mason-green-link);
   text-decoration: none;
   transition: color 0.2s ease;
 }
@@ -140,7 +143,7 @@ a:hover {
 .nav-tab {
   padding: 0.75rem 1.5rem;
   border-radius: var(--radius-pill);
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Hind', sans-serif;
   font-weight: 500;
   font-size: 0.95rem;
   color: var(--mason-blue);
@@ -206,7 +209,7 @@ a:hover {
 .nav-dropdown-menu a {
   padding: 0.6rem 1rem;
   border-radius: var(--radius-pill);
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Hind', sans-serif;
   font-weight: 500;
   font-size: 0.9rem;
   color: var(--mason-blue);
@@ -234,6 +237,20 @@ a:hover {
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 60px;
+  background: url('assets/wave-divider.svg') no-repeat bottom center;
+  background-size: 100% 100%;
+  pointer-events: none;
 }
 
 .hero-content {
@@ -252,7 +269,7 @@ a:hover {
 }
 
 .hero h2 {
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Hind', sans-serif;
   font-size: 2.5rem;
   font-weight: 700;
   margin-bottom: 1.5rem;
@@ -272,7 +289,7 @@ a:hover {
 .btn {
   display: inline-block;
   padding: 1rem 2rem;
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Hind', sans-serif;
   font-size: 1rem;
   font-weight: 600;
   border: none;
@@ -307,6 +324,18 @@ a:hover {
   color: var(--mhon-white);
 }
 
+.btn-outline {
+  background: transparent;
+  box-shadow: inset 0 0 0 3px var(--mhon-white);
+  color: var(--mhon-white);
+}
+
+.btn-outline:hover {
+  background: var(--mhon-white);
+  color: var(--mason-blue);
+  box-shadow: var(--shadow-md);
+}
+
 .btn-small {
   padding: 0.6rem 1.25rem;
   font-size: 0.9rem;
@@ -319,12 +348,13 @@ a:hover {
 }
 
 .section-title {
-  font-family: 'Outfit', sans-serif;
+  display: inline-block;
+  font-family: 'Hind', sans-serif;
   font-size: 1.75rem;
-  font-weight: 600;
+  font-weight: 700;
   margin-bottom: 1.5rem;
   padding-bottom: 0.75rem;
-  border-bottom: 3px solid var(--mason-green);
+  border-bottom: 7px solid var(--mason-green);
   color: var(--mason-blue);
 }
 
@@ -373,7 +403,7 @@ a:hover {
 }
 
 .event-bar h3 {
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Hind', sans-serif;
   font-size: 1.4rem;
   font-weight: 600;
   color: var(--mason-blue);
@@ -451,7 +481,7 @@ a:hover {
 .info-section h3 {
   color: var(--mason-green);
   margin-bottom: 0.5rem;
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Hind', sans-serif;
   font-size: 1.15rem;
 }
 
@@ -499,7 +529,7 @@ a:hover {
   font-size: 1.1rem;
   margin-bottom: 1rem;
   font-weight: 600;
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Hind', sans-serif;
 }
 
 .footer-section p,
@@ -570,7 +600,7 @@ a:hover {
   gap: 0.5rem;
   padding: 0.65rem 1.25rem;
   border-radius: var(--radius-pill);
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Hind', sans-serif;
   font-weight: 600;
   font-size: 0.9rem;
   color: var(--mhon-white);
@@ -606,7 +636,7 @@ a:hover {
   align-items: center;
   justify-content: space-between;
   padding: 0.5rem 1rem 0.75rem;
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Hind', sans-serif;
   font-weight: 600;
   color: var(--mason-blue);
   border-bottom: 1px solid var(--mason-gray);
@@ -630,7 +660,7 @@ a:hover {
   padding: 0.65rem 1rem;
   background: none;
   border: none;
-  font-family: 'Lato', sans-serif;
+  font-family: 'Hind', sans-serif;
   font-size: 0.95rem;
   color: var(--text-dark);
   text-align: left;
