@@ -514,8 +514,7 @@ a:hover {
      cards rather than stopping behind them. */
   background: rgba(255, 255, 255, 0.88);
   border-radius: var(--radius-md);
-  /* Extra bottom padding leaves room for the corner swirl. */
-  padding: 2rem 2rem 2.75rem;
+  padding: 2rem;
   box-shadow: var(--shadow-sm);
   display: flex;
   flex-direction: column;
@@ -525,18 +524,23 @@ a:hover {
   transition: box-shadow 0.3s ease, transform 0.3s ease;
 }
 
-/* Signature Mason treatment: every card carries the green/blue swirl in its
-   bottom-right corner, the way cards do on masonohioschools.com. */
+/* Signature Mason treatment: the green/blue swirl washes across the whole
+   card, kept faint so body copy stays readable on top of it. */
 .event-bar::after {
   content: '';
   position: absolute;
-  right: 0;
-  bottom: 0;
-  width: 55%;
-  height: 90px;
-  background: url('assets/mason-greenblueswirl.png') no-repeat right bottom;
-  background-size: cover;
+  inset: 0;
+  background: url('assets/mason-greenblueswirl.png') no-repeat center;
+  background-size: 100% 100%;
+  opacity: 0.2;
   pointer-events: none;
+  z-index: 0;
+}
+
+/* Card content sits above the swirl wash. */
+.event-bar > * {
+  position: relative;
+  z-index: 1;
 }
 
 .event-bar:hover {
@@ -559,7 +563,9 @@ a:hover {
 
 .event-bar .event-description {
   font-size: 1rem;
-  color: var(--text-light);
+  /* Mason's own body color — also holds contrast over the swirl wash better
+     than the lighter gray did. */
+  color: var(--mason-blue-light);
   line-height: 1.7;
   margin-bottom: 0.5rem;
 }
@@ -921,13 +927,7 @@ a:hover {
   }
 
   .event-bar {
-    padding: 1.5rem 1.5rem 2.25rem;
-  }
-
-  /* Narrower cards need a smaller corner swirl so it stays clear of the CTA. */
-  .event-bar::after {
-    width: 45%;
-    height: 66px;
+    padding: 1.5rem;
   }
 
   .section-title {
