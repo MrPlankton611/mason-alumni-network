@@ -420,22 +420,21 @@ a:hover {
 .section::after {
   content: '';
   position: absolute;
+  top: 0;
+  bottom: 0;
   width: 480px;
-  height: 480px;
-  background: url('assets/mason-greenblueswirl.png') no-repeat center;
-  background-size: contain;
-  opacity: 0.15;
+  background: url('assets/mason-greenblueswirl.png') repeat-y center;
+  background-size: 480px auto;
+  opacity: 0.12;
   pointer-events: none;
   z-index: 0;
 }
 
 .section::before {
-  top: -60px;
   left: -100px;
 }
 
 .section::after {
-  top: -60px;
   right: -100px;
   transform: scaleX(-1);
 }
