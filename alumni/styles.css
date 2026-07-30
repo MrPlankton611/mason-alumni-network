@@ -313,7 +313,11 @@ a:hover {
 }
 
 .hero--college {
-  background-position: center 38%;
+  background-position: center 55%;
+}
+
+.hero--career {
+  background-position: center 30%;
 }
 
 .hero-content {
@@ -806,7 +810,11 @@ a:hover {
   }
 
   .hero--college {
-    background-position: center 28%;
+    background-position: center 35%;
+  }
+
+  .hero--career {
+    background-position: center 20%;
   }
 
   .nav-dropdown-menu {
