@@ -430,7 +430,7 @@ a:hover {
   inset: 0;
   background: url('assets/mason-greenblueswirl.png') no-repeat center;
   background-size: 175% auto;
-  opacity: 0.22;
+  opacity: 0.14;
   pointer-events: none;
   z-index: 0;
 }
@@ -443,12 +443,42 @@ a:hover {
 .section-title {
   display: inline-block;
   font-family: 'Hind', sans-serif;
-  font-size: 1.75rem;
+  font-size: 2.5rem;
+  line-height: 1.15;
   font-weight: 700;
-  margin-bottom: 1.5rem;
-  padding-bottom: 0.75rem;
+  margin-bottom: 2.5rem;
+  padding-bottom: 0.85rem;
   border-bottom: 7px solid var(--mason-green);
   color: var(--mason-blue);
+}
+
+/* Breadcrumb — matches the interior-page trail on masonohioschools.com */
+.breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.breadcrumb a {
+  color: var(--mason-blue);
+}
+
+.breadcrumb a:hover {
+  color: var(--mason-green-link);
+}
+
+.breadcrumb .breadcrumb-sep {
+  color: var(--mason-green);
+}
+
+.breadcrumb [aria-current='page'] {
+  color: var(--mason-green-link);
 }
 
 .section-header {
@@ -473,36 +503,58 @@ a:hover {
 .events-list {
   max-width: 1200px;
   margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(420px, 100%), 1fr));
+  gap: 1.75rem;
+  align-items: stretch;
 }
 
 .event-bar {
   /* Slightly translucent so the section swirl reads as passing through the
      cards rather than stopping behind them. */
-  background: rgba(255, 255, 255, 0.82);
+  background: rgba(255, 255, 255, 0.88);
   border-radius: var(--radius-md);
-  padding: 2rem;
-  margin-bottom: 1.5rem;
+  /* Extra bottom padding leaves room for the corner swirl. */
+  padding: 2rem 2rem 2.75rem;
   box-shadow: var(--shadow-sm);
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  transition: box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+/* Signature Mason treatment: every card carries the green/blue swirl in its
+   bottom-right corner, the way cards do on masonohioschools.com. */
+.event-bar::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 55%;
+  height: 90px;
+  background: url('assets/mason-greenblueswirl.png') no-repeat right bottom;
+  background-size: cover;
+  pointer-events: none;
 }
 
 .event-bar:hover {
   box-shadow: var(--shadow-md);
-}
-
-.event-bar:last-child {
-  margin-bottom: 0;
+  transform: translateY(-3px);
 }
 
 .event-bar h3 {
   font-family: 'Hind', sans-serif;
-  font-size: 1.4rem;
-  font-weight: 600;
+  font-size: 1.3rem;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
   color: var(--mason-blue);
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.85rem;
+  padding-bottom: 0.65rem;
+  border-bottom: 3px solid var(--mason-green);
 }
 
 .event-bar .event-description {
@@ -521,6 +573,16 @@ a:hover {
 .event-bar .event-meta strong {
   color: var(--mason-blue);
   font-weight: 600;
+}
+
+/* Pin the CTA to the bottom so cards in a row line up, and keep it clear of
+   the corner swirl. */
+.event-bar .btn,
+.event-bar .signup-tbd-message {
+  margin-top: auto;
+  align-self: flex-start;
+  position: relative;
+  z-index: 1;
 }
 
 .signup-tbd-message {
@@ -859,11 +921,17 @@ a:hover {
   }
 
   .event-bar {
-    padding: 1.5rem;
+    padding: 1.5rem 1.5rem 2.25rem;
+  }
+
+  /* Narrower cards need a smaller corner swirl so it stays clear of the CTA. */
+  .event-bar::after {
+    width: 45%;
+    height: 66px;
   }
 
   .section-title {
-    font-size: 1.5rem;
+    font-size: 1.9rem;
   }
 
   .footer-main {
