@@ -412,6 +412,37 @@ a:hover {
 .section {
   padding: 3rem 0;
   flex: 1 0 auto;
+  position: relative;
+  overflow: hidden;
+}
+
+.section::before,
+.section::after {
+  content: '';
+  position: absolute;
+  width: 480px;
+  height: 480px;
+  background: url('assets/mason-greenblueswirl.png') no-repeat center;
+  background-size: contain;
+  opacity: 0.15;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.section::before {
+  top: -60px;
+  left: -100px;
+}
+
+.section::after {
+  top: -60px;
+  right: -100px;
+  transform: scaleX(-1);
+}
+
+.section > .container {
+  position: relative;
+  z-index: 1;
 }
 
 .section-title {
