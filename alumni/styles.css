@@ -516,8 +516,6 @@ a:hover {
 }
 
 .event-bar {
-  /* Slightly translucent so the section swirl reads as passing through the
-     cards rather than stopping behind them. */
   /* Solid white so copy stays fully legible over the section photo. */
   background: var(--mhon-white);
   border-radius: var(--radius-md);
@@ -529,6 +527,26 @@ a:hover {
   position: relative;
   overflow: hidden;
   transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+/* Signature Mason treatment: the green/blue swirl washes across each card.
+   Kept faint, and the card itself stays opaque, so copy holds contrast both
+   over the swirl and over the section photo behind it. */
+.event-bar::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url('assets/mason-greenblueswirl.png') no-repeat center;
+  background-size: 100% 100%;
+  opacity: 0.18;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Card content sits above the swirl wash. */
+.event-bar > * {
+  position: relative;
+  z-index: 1;
 }
 
 .event-bar:hover {
