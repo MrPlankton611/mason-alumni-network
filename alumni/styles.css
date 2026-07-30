@@ -432,7 +432,7 @@ a:hover {
   inset: 0;
   background: url('assets/hero-home.jpg') no-repeat center 30%;
   background-size: cover;
-  opacity: 0.32;
+  opacity: 0.4;
   /* Fade in below the hero's wave divider so there's no tonal seam where the
      wave's flat fill meets the photo. */
   -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 150px);
