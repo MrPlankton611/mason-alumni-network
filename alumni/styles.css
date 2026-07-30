@@ -424,13 +424,19 @@ a:hover {
   overflow: hidden;
 }
 
+/* A real alumni photo sits behind the whole section, kept faint so it reads as
+   atmosphere. Cards on top stay solid white, so body copy never loses contrast. */
 .section::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: url('assets/mason-greenblueswirl.png') no-repeat center;
-  background-size: 175% auto;
-  opacity: 0.14;
+  background: url('assets/hero-home.jpg') no-repeat center 30%;
+  background-size: cover;
+  opacity: 0.2;
+  /* Fade in below the hero's wave divider so there's no tonal seam where the
+     wave's flat fill meets the photo. */
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 150px);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 150px);
   pointer-events: none;
   z-index: 0;
 }
@@ -512,7 +518,8 @@ a:hover {
 .event-bar {
   /* Slightly translucent so the section swirl reads as passing through the
      cards rather than stopping behind them. */
-  background: rgba(255, 255, 255, 0.88);
+  /* Solid white so copy stays fully legible over the section photo. */
+  background: var(--mhon-white);
   border-radius: var(--radius-md);
   padding: 2rem;
   box-shadow: var(--shadow-sm);
@@ -522,25 +529,6 @@ a:hover {
   position: relative;
   overflow: hidden;
   transition: box-shadow 0.3s ease, transform 0.3s ease;
-}
-
-/* Signature Mason treatment: the green/blue swirl washes across the whole
-   card, kept faint so body copy stays readable on top of it. */
-.event-bar::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: url('assets/mason-greenblueswirl.png') no-repeat center;
-  background-size: 100% 100%;
-  opacity: 0.2;
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* Card content sits above the swirl wash. */
-.event-bar > * {
-  position: relative;
-  z-index: 1;
 }
 
 .event-bar:hover {
